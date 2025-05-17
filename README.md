@@ -72,3 +72,22 @@ Utilize knowledge from HDL logic design and related subjects to design a simple 
 - 5-bit address and 8-bit data width.
 - 1-bit read/write enable signal.
 - Operates on the rising edge of the clock.
+
+### Build & Run using iverilog
+
+#### preparation:
+```bash
+sudo apt install iverilog gtkwave  # Install simulation tools
+git clone https://github.com/phat-tech123/RISC-CPU.git
+cd RISC-CPU.
+
+#### Compile the design:
+```bash
+make compile 
+make run
+
+#### Waveform simulations:
+```bash
+make wave
+
+
