@@ -1,8 +1,4 @@
 # Simple RISC CPU Design
-
-![RISC CPU Block Diagram](https://via.placeholder.com/800x400?text=RISC+CPU+Block+Diagram)  
-*(Example CPU architecture diagram - replace with your actual image)*
-
 ## Introduction
 A Reduced Instruction Set Computer (RISC) processor design implemented in HDL. This project features:
 - 3-bit opcode supporting 8 instructions
