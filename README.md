@@ -77,7 +77,7 @@ Utilize knowledge from **HDL logic design** to implement a RISC CPU on an FPGA d
 ### Preparation  
 ```bash
 sudo apt install iverilog gtkwave  
-git clone https://github.com/phat-tech123/RISC-CPU.git  
+git clone https://github.com/nguyenquangnghiem/CPU_RISC.git
 cd RISC-CPU
 ```
 ### Compile the design:
