@@ -79,14 +79,14 @@ Utilize knowledge from HDL logic design and related subjects to design a simple 
 ```bash
 sudo apt install iverilog gtkwave  # Install simulation tools
 git clone https://github.com/phat-tech123/RISC-CPU.git
-cd RISC-CPU.
+cd RISC-CPU
 
-#### Compile the design:
+Compile the design:
 ```bash
 make compile 
 make run
 
-#### Waveform simulations:
+Waveform simulations:
 ```bash
 make wave
 
