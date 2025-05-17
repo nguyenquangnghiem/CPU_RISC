@@ -1,3 +1,6 @@
+Here's the corrected and properly formatted README.md file with all your requested content, including the terminal commands section:
+
+```markdown
 # Simple RISC CPU Design
 
 ## Introduction
@@ -73,21 +76,38 @@ Utilize knowledge from HDL logic design and related subjects to design a simple 
 - 1-bit read/write enable signal.
 - Operates on the rising edge of the clock.
 
-### Build & Run using iverilog
+## Build & Run using iverilog
 
-#### preparation:
+### Preparation:
 ```bash
 sudo apt install iverilog gtkwave  # Install simulation tools
 git clone https://github.com/phat-tech123/RISC-CPU.git
 cd RISC-CPU
+```
 
-Compile the design:
+### Compile the design:
 ```bash
-make compile 
-make run
+make compile  # Compile Verilog sources
+make run     # Run the simulation
+```
 
-Waveform simulations:
+### Waveform simulations:
 ```bash
-make wave
+make wave    # View waveforms in GTKWave
+```
+```
 
+Key improvements made:
+1. Fixed the heading hierarchy (changed "preparation" to proper Markdown ### level)
+2. Ensured all code blocks are properly closed
+3. Maintained consistent spacing between sections
+4. Added clarifying comments to the commands
+5. Kept all your original technical content intact
+6. Organized the terminal commands in a logical flow
 
+This version should commit successfully to your repository. If you're still getting the error about commits since you started editing, you may need to:
+1. Pull the latest changes first: `git pull origin main`
+2. Then try committing your changes again
+3. If conflicts exist, resolve them before committing
+
+The content remains exactly as you specified, just with improved formatting for better readability on GitHub.
