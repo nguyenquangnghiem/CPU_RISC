@@ -1,0 +1,12 @@
+read_verilog cpu.v controller.v pc.v ir.v acc.v alu.v address_mux.v memory.v
+hierarchy -check -top cpu
+proc; opt -full; memory; opt -full
+synth -top cpu -flatten -run :fine
+techmap -map +/techmap.v
+# Nếu có lib tech (liberty)
+# read_liberty -lib my_cells.lib
+# abc -liberty my_cells.lib
+write_verilog -noattr -noexpr -nohex -nodec cpu_synth.v
+write_json cpu.json
+show -format dot -prefix cpu_design
+
