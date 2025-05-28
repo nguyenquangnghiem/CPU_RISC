@@ -3,7 +3,7 @@ module memory(
     input wire rst,
     input wire data_e,
     input wire wrt,
-    input wire rd,
+    input wire rd, 
     input wire [4:0] mux_addr,
     inout wire [7:0] data_bus,
     output wire [7:0] mem_out
