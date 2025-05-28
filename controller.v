@@ -256,7 +256,7 @@ always @(posedge clk or posedge rst) begin
             IDLE: begin
                 sel     <= 1'b1;
                 rd      <= 1'b1;
-                ld_ir   <= 1'b0;
+                ld_ir   <= 1'b1;
                 halt    <= 1'b0;
                 inc_pc  <= 1'b0;
                 ld_ac   <= 1'b0;
