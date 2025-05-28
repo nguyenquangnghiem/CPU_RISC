@@ -5,12 +5,10 @@
 `include "alu.v"
 `include "address_mux.v"
 `include "memory.v"
-// Module: cpu
-// Description: Top-level module for a simple CPU design
+
 module cpu(
     input wire clk,
     input wire rst,
-
     output wire halt_out
 );
 
@@ -21,6 +19,7 @@ module cpu(
     wire [7:0] acc_data;
     wire [4:0] pc;
     wire [4:0] mux_addr;
+    wire [7:0] data_bus;
 
     wire sel, rd, ld_ir, inc_pc, ld_ac, ld_pc, wr, data_e, is_zero;
 
@@ -89,8 +88,10 @@ module cpu(
         .wrt(wr),
         .rd(rd),
         .mux_addr(mux_addr),
-        .acc_data(acc_data),
+        .data_bus(data_bus),
         .mem_out(mem_out)
     );
 
+    // Kết nối bus dữ liệu
+    assign data_bus = (data_e && wr) ? acc_data : 8'bz;
 endmodule

@@ -5,28 +5,33 @@ module memory(
     input wire wrt,
     input wire rd,
     input wire [4:0] mux_addr,
-    input wire [7:0] acc_data,
-    output reg [7:0] mem_out
+    inout wire [7:0] data_bus,
+    output wire [7:0] mem_out
 );
 
 reg [7:0] memory[0:31];  
+reg [7:0] data_out;
+
+assign data_bus = (data_e && wrt) ? data_out : 8'bz;
+assign mem_out = data_out;
 
 initial begin
     $readmemb("memory_init.bin", memory);
 end
+
 always @(posedge clk or posedge rst) begin
     if (rst) begin
-        mem_out <= 8'b0;
+        data_out <= 8'b0;
     end
     else if (wrt && data_e) begin
-        memory[mux_addr] <= acc_data;
-        mem_out <= acc_data;  
+        memory[mux_addr] <= data_bus;
+        data_out <= data_bus;
     end
     else if (rd) begin
-        mem_out <= memory[mux_addr];
+        data_out <= memory[mux_addr];
     end
-    else 
-        mem_out <= mem_out;
+    else begin
+        data_out <= data_out;
+    end
 end
-
 endmodule

@@ -9,7 +9,7 @@ module ir(
 
 always @(posedge clk or posedge rst) begin
     if (rst) begin
-        {opcode, address} <= 1'b0;
+        {opcode, address} <= 8'b0;
     end
     else if(ld_ir) begin
         opcode <= mem_out[7:5];
