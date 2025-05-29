@@ -15,7 +15,7 @@ always @(*) begin
         default: result = acc_data;           // Default case
     endcase
     
-    is_zero = (result == 8'b0);
+    is_zero = (acc_data == 8'b0);
 end
 
 endmodule

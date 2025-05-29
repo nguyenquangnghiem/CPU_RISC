@@ -18,7 +18,7 @@ initial begin
     $readmemb("memory_init.bin", memory);
 end
 
-assign data_bus = (data_e && wrt) ? mem_out : 8'bz;
+assign data_bus = (data_e && rd) ? memory[mux_addr] : 8'bz;
 
 always @(posedge clk or posedge rst) begin
     if (rst)
