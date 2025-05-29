@@ -1,0 +1,6 @@
+read_verilog cpu.v         # Đọc file Verilog
+hierarchy -top cpu         # Chỉ định module top
+proc                       # Biến đổi always -> process
+opt                        # Tối ưu logic
+flatten                    # Ghép tất cả vào 1 module
+show -format dot -prefix cpu_graph  # Xuất file DOT

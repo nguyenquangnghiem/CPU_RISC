@@ -2,7 +2,6 @@ module controller(
     input wire clk,
     input wire rst,
     input wire [2:0] opcode,
-    input wire is_zero,
     output reg sel,
     output reg rd,
     output reg ld_ir,
@@ -17,11 +16,11 @@ module controller(
 parameter INST_ADDR  = 3'd0;
 parameter INST_FETCH = 3'd1;
 parameter INST_LOAD  = 3'd2;
-parameter IDLE       = 3'd3; 
-parameter OP_ADDR    = 3'd4;
-parameter OP_FETCH   = 3'd5;
-parameter ALU_OP     = 3'd6;
-parameter STORE      = 3'd7;
+parameter IDLE       = 3'd7;  // Thêm trạng thái IDLE
+parameter OP_ADDR    = 3'd3;
+parameter OP_FETCH   = 3'd4;
+parameter ALU_OP     = 3'd5;
+parameter STORE      = 3'd6;
 
 parameter HLT = 3'b000;
 parameter SKZ = 3'b001;
@@ -85,7 +84,7 @@ always @(posedge clk or posedge rst) begin
                 ld_pc   <= 1'b0;
                 wr      <= 1'b0;
                 data_e  <= 1'b0;
-                state   <= IDLE;
+                state   <= IDLE;  // Chuyển sang IDLE trước khi OP_ADDR
             end
             
             IDLE: begin
@@ -106,22 +105,19 @@ always @(posedge clk or posedge rst) begin
                 rd      <= 1'b0;
                 ld_ir   <= 1'b0;
                 halt    <= (opcode == HLT) ? 1'b1 : 1'b0;
+                inc_pc  <= (opcode != HLT) ? 1'b1 : 1'b0;
                 ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
+                ld_pc   <= 1'bd;
                 wr      <= 1'b0;
                 data_e  <= 1'b0;
-                if (opcode == HLT) begin
+                if (opcode == HLT)
                     state <= OP_ADDR;
-                    inc_pc <= 0;
-                end
-                else if (opcode == JMP) begin
-                    state <= OP_FETCH ;
-                    inc_pc <= 0 ;
-                end
-                else begin
-                    inc_pc <= 1 ; 
+                else if (opcode == STO)
+                    state <= STORE;
+                else if (opcode == SKZ || opcode == JMP)
+                    state <= INST_ADDR;
+                else
                     state <= OP_FETCH;
-                end
             end
 
             OP_FETCH: begin
@@ -142,17 +138,17 @@ always @(posedge clk or posedge rst) begin
                 rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
                 ld_ir   <= 1'b0;
                 halt    <= 1'b0;
+                inc_pc  <= 1'b0;
                 ld_ac   <= 1'b0;
-                wr      <= 1'b0;
-                inc_pc  <= (opcode == SKZ && is_zero) ;
                 ld_pc   <= (opcode == JMP) ? 1'b1 : 1'b0;
+                wr      <= 1'b0;
                 data_e  <= (opcode == STO) ? 1'b1 : 1'b0;
                 state   <= STORE;
             end
 
             STORE: begin
                 sel     <= 1'b0;
-                rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
+                rd      <= 1'b0;
                 ld_ir   <= 1'b0;
                 halt    <= 1'b0;
                 inc_pc  <= 1'b0;
