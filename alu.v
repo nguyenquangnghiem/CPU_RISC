@@ -12,6 +12,6 @@ assign result = (opcode == 3'b010) ? (acc_data + mem_out) : // ADD
                 (opcode == 3'b101) ? mem_out :              // LDA
                 acc_data;
 
-assign is_zero = (result == 8'b0);
+assign is_zero = (acc_data == 8'b0);
 
 endmodule

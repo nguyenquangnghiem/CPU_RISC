@@ -4,6 +4,7 @@ module memory(
     input wire data_e,
     input wire wrt,
     input wire rd, 
+    input wire is_zero,
     input wire [4:0] mux_addr,
     inout wire [7:0] data_bus,
     output reg [7:0] mem_out

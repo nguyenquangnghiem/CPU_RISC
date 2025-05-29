@@ -27,6 +27,7 @@ module cpu(
         .clk(clk),
         .rst(rst),
         .opcode(opcode),
+        .is_zero(is_zero),
         .sel(sel),
         .rd(rd),
         .ld_ir(ld_ir),
@@ -41,9 +42,7 @@ module cpu(
     pc program_counter(
         .clk(clk),
         .rst(rst),
-        .opcode(opcode),
         .ld_pc(ld_pc),
-        .is_zero(is_zero),
         .inc_pc(inc_pc),
         .mux_addr(mux_addr),
         .pc(pc)
