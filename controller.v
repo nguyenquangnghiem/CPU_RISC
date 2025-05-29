@@ -2,6 +2,7 @@ module controller(
     input wire clk,
     input wire rst,
     input wire [2:0] opcode,
+    input wire is_zero,
     output reg sel,
     output reg rd,
     output reg ld_ir,
