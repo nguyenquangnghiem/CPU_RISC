@@ -16,7 +16,7 @@ module controller(
 parameter INST_ADDR  = 3'd0;
 parameter INST_FETCH = 3'd1;
 parameter INST_LOAD  = 3'd2;
-parameter IDLE       = 3'd3;  // Thêm trạng thái IDLE
+parameter IDLE       = 3'd3; 
 parameter OP_ADDR    = 3'd4;
 parameter OP_FETCH   = 3'd5;
 parameter ALU_OP     = 3'd6;
@@ -84,7 +84,7 @@ always @(posedge clk or posedge rst) begin
                 ld_pc   <= 1'b0;
                 wr      <= 1'b0;
                 data_e  <= 1'b0;
-                state   <= IDLE;  // Chuyển sang IDLE trước khi OP_ADDR
+                state   <= IDLE;
             end
             
             IDLE: begin
@@ -107,7 +107,7 @@ always @(posedge clk or posedge rst) begin
                 halt    <= (opcode == HLT) ? 1'b1 : 1'b0;
                 inc_pc  <= (opcode != HLT) ? 1'b1 : 1'b0;
                 ld_ac   <= 1'b0;
-                ld_pc   <= 1'bd;
+                ld_pc   <= 1'b0;
                 wr      <= 1'b0;
                 data_e  <= 1'b0;
                 if (opcode == HLT)
