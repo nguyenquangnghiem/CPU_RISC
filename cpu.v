@@ -20,8 +20,8 @@ module cpu(
     wire [4:0] pc;
     wire [4:0] mux_addr;
     wire [7:0] data_bus;
-
-    wire sel, rd, ld_ir, inc_pc, ld_ac, ld_pc, wr, data_e, is_zero;
+    wire is_zero;
+    wire sel, rd, ld_ir, inc_pc, ld_ac, ld_pc, wr, data_e, skip_two;
 
     controller ctrl(
         .clk(clk),
@@ -36,7 +36,8 @@ module cpu(
         .ld_ac(ld_ac),
         .ld_pc(ld_pc),
         .wr(wr),
-        .data_e(data_e)
+        .data_e(data_e),
+        .skip_two(skip_two)
     );
 
     pc program_counter(
@@ -44,6 +45,7 @@ module cpu(
         .rst(rst),
         .ld_pc(ld_pc),
         .inc_pc(inc_pc),
+        .skip_two(skip_two),
         .mux_addr(mux_addr),
         .pc(pc)
     );
@@ -91,6 +93,6 @@ module cpu(
         .mem_out(mem_out)
     );
 
-    // Kết nối bus dữ liệu
     assign data_bus = (data_e && wr) ? acc_data : 8'bz;
+
 endmodule

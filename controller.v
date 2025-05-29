@@ -11,17 +11,17 @@ module controller(
     output reg ld_ac,
     output reg ld_pc,
     output reg wr,
-    output reg data_e
+    output reg data_e,
+    output reg skip_two
 );
 
 parameter INST_ADDR  = 3'd0;
 parameter INST_FETCH = 3'd1;
 parameter INST_LOAD  = 3'd2;
-parameter IDLE       = 3'd3; 
-parameter OP_ADDR    = 3'd4;
-parameter OP_FETCH   = 3'd5;
-parameter ALU_OP     = 3'd6;
-parameter STORE      = 3'd7;
+parameter OP_ADDR    = 3'd3;
+parameter OP_FETCH   = 3'd4;
+parameter ALU_OP     = 3'd5;
+parameter STORE      = 3'd6;
 
 parameter HLT = 3'b000;
 parameter SKZ = 3'b001;
@@ -46,132 +46,79 @@ always @(posedge clk or posedge rst) begin
         ld_pc <= 1'b0;
         wr <= 1'b0;
         data_e <= 1'b0;
+        skip_two <= 1'b0;
     end
     else begin
+        // Default values
+        ld_ir <= 1'b0;
+        inc_pc <= 1'b0;
+        ld_ac <= 1'b0;
+        ld_pc <= 1'b0;
+        wr <= 1'b0;
+        data_e <= 1'b0;
+        skip_two <= 1'b0;
+        
         case (state)
             INST_ADDR: begin
-                sel     <= 1'b1;
-                rd      <= 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= INST_FETCH;
-            end
-
-            INST_FETCH: begin
-                sel     <= 1'b1;
-                rd      <= 1'b1;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= INST_LOAD;
-            end
-
-            INST_LOAD: begin
-                sel     <= 1'b1;
-                rd      <= 1'b1;
-                ld_ir   <= 1'b1;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= IDLE;
+                sel <= 1'b1;
+                rd <= 1'b0;
+                state <= INST_FETCH;
             end
             
-            IDLE: begin
-                sel     <= 1'b1;
-                rd      <= 1'b1;
-                ld_ir   <= 1'b1;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= OP_ADDR;
+            INST_FETCH: begin
+                sel <= 1'b1;
+                rd <= 1'b1;
+                state <= INST_LOAD;
             end
-
+            
+            INST_LOAD: begin
+                sel <= 1'b1;
+                rd <= 1'b1;
+                ld_ir <= 1'b1;
+                state <= OP_ADDR;
+            end
+            
             OP_ADDR: begin
-                sel     <= 1'b0;
-                rd      <= 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= (opcode == HLT) ? 1'b1 : 1'b0;
-                inc_pc  <= 1'b1;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                if (opcode == HLT) begin
+                sel <= 1'b0;
+                rd <= 1'b0;
+                halt <= (opcode == HLT);
+                inc_pc <= 1'b1;
+                
+                if (opcode == HLT)
                     state <= OP_ADDR;
-                end
                 else
                     state <= OP_FETCH;
             end
-
+            
             OP_FETCH: begin
-                sel     <= 1'b0;
-                rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= ALU_OP;
+                sel <= 1'b0;
+                rd <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA);
+                state <= ALU_OP;
             end
-
+            
             ALU_OP: begin
-                sel     <= 1'b0;
-                rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= (opcode == SKZ && is_zero) ;
-                ld_ac   <= 1'b0;
-                ld_pc   <= (opcode == JMP) ? 1'b1 : 1'b0;
-                wr      <= 1'b0;
-                data_e  <= (opcode == STO) ? 1'b1 : 1'b0;
-                state   <= STORE;
+                sel <= 1'b0;
+                rd <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA);
+                inc_pc <= (opcode == SKZ && is_zero);
+                skip_two <= (opcode == SKZ && is_zero);
+                ld_pc <= (opcode == JMP);
+                data_e <= (opcode == STO);
+                state <= STORE;
             end
-
+            
             STORE: begin
-                sel     <= 1'b0;
-                rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
-                ld_pc   <= (opcode == JMP) ? 1'b1 : 1'b0;
-                wr      <= (opcode == STO) ? 1'b1 : 1'b0;
-                data_e  <= (opcode == STO) ? 1'b1 : 1'b0;
-                state   <= INST_ADDR;
+                sel <= 1'b0;
+                rd <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA);
+                ld_ac <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA);
+                ld_pc <= (opcode == JMP);
+                wr <= (opcode == STO);
+                data_e <= (opcode == STO);
+                state <= INST_ADDR;
             end
-
-            default: begin
-                sel     <= 1'b0;
-                rd      <= 1'b0;
-                ld_ir   <= 1'b0;
-                halt    <= 1'b0;
-                inc_pc  <= 1'b0;
-                ld_ac   <= 1'b0;
-                ld_pc   <= 1'b0;
-                wr      <= 1'b0;
-                data_e  <= 1'b0;
-                state   <= INST_ADDR;
-            end
+            
+            default: state <= INST_ADDR;
         endcase
     end
 end
+
 endmodule
-
-

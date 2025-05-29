@@ -7,12 +7,10 @@ module acc(
 );
 
 always @(posedge clk or posedge rst) begin
-    if (rst) 
-        acc_data <= 0;
+    if (rst)
+        acc_data <= 8'b0;
     else if (ld_ac)
         acc_data <= result;
-    else
-        acc_data <= acc_data;
 end
 
 endmodule
