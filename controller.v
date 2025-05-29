@@ -105,17 +105,13 @@ always @(posedge clk or posedge rst) begin
                 rd      <= 1'b0;
                 ld_ir   <= 1'b0;
                 halt    <= (opcode == HLT) ? 1'b1 : 1'b0;
-                inc_pc  <= (opcode != HLT) ? 1'b1 : 1'b0;
+                inc_pc  <= 1'b1;
                 ld_ac   <= 1'b0;
                 ld_pc   <= 1'b0;
                 wr      <= 1'b0;
                 data_e  <= 1'b0;
                 if (opcode == HLT)
                     state <= OP_ADDR;
-                else if (opcode == STO)
-                    state <= STORE;
-                else if (opcode == SKZ || opcode == JMP)
-                    state <= INST_ADDR;
                 else
                     state <= OP_FETCH;
             end
@@ -148,7 +144,7 @@ always @(posedge clk or posedge rst) begin
 
             STORE: begin
                 sel     <= 1'b0;
-                rd      <= 1'b0;
+                rd      <= (opcode == ADD || opcode == AND || opcode == XOR || opcode == LDA) ? 1'b1 : 1'b0;
                 ld_ir   <= 1'b0;
                 halt    <= 1'b0;
                 inc_pc  <= 1'b0;
