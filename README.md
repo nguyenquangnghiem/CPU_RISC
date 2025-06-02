@@ -2,7 +2,7 @@
 
 ## INTRODUCE
 A **RISC (Reduced Instruction Set Computer) CPU** is designed to execute a minimal set of simple instructions with high efficiency, ensuring sequential program execution based on simplified processing principles. The CPU performs the following core operations:
-### Bảng mã Opcode và hoạt động
+### Opcode Table and Operations
 
 | Opcode | Code | Operation | Output     |
 |--------|------|-----------|------------|
