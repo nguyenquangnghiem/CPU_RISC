@@ -2,14 +2,11 @@
 
 ## INTRODUCE
 A **RISC (Reduced Instruction Set Computer) CPU** is designed to execute a minimal set of simple instructions with high efficiency, ensuring sequential program execution based on simplified processing principles. The CPU performs the following core operations:
-
-1. **Fetch Instruction**  
-   - Retrieves the next instruction from memory.
-2. **Decode Instruction**  
-   - Interprets the fetched instruction to determine the operation.
-3. **Fetch Operand Data**  
-   - Loads required data from memory (if applicable).
-4. **Execute Instruction**  
-   - Performs the decoded operation (e.g., arithmetic, logic).
-5. **Store Result**  
-   - Writes the output back to memory or registers.
+|Opcode|Code|Operation|Output|
+|**HLT**|000|Halts program execution|inA|
+|**SKZ**|001|the first checks ALU result : Skips next instruction if zero,
+             otherwise continues normal execution |inA|
+|**ADD**|010|Adds memory data to accomulator data, 
+             stores result into accomulator. |inA|
+|**AND**|011|ANDS memory data to accomulator data, stores result into accomulator. |inA|
+|**XOR**|100|XORS memory data to accomulator data, stores result into accomulator. |intA|
