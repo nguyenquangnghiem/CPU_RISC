@@ -1,6 +1,6 @@
 # CPU RISC 8-bit
     CPU RISC is designed to execute a set of simple instructions with high efficiency, ensurìng sequential operation of program according to simple process principles . CPU is capable of performing the following functions : 
-    - Fetch instruction from memory.
+    ... Fetch instruction from memory.
     - Decode instruction.
     - Fetch oparand data from memory.
     - execute instruction.
