@@ -13,6 +13,3 @@ A **RISC (Reduced Instruction Set Computer) CPU** is designed to execute a minim
    - Performs the decoded operation (e.g., arithmetic, logic).
 5. **Store Result**  
    - Writes the output back to memory or registers.
-6. **Execution Flow Management**  
-   - The **Program Counter (PC)** tracks the current instruction address.  
-   - The **Address Multiplexer (Address Mux)** and **Controller** coordinate to load the next instruction into the **Instruction Register (IR)**.
