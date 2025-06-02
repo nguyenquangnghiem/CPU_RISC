@@ -4,13 +4,14 @@
 A **RISC (Reduced Instruction Set Computer) CPU** is designed to execute a minimal set of simple instructions with high efficiency, ensuring sequential program execution based on simplified processing principles. The CPU performs the following core operations:
 ### Bảng mã Opcode và hoạt động
 
-| Opcode | Mã  | Hoạt động | Output |
-|--------|-----|-----------|--------|
-| **HLT** | 000 | Dừng hoạt động chương trình | `inA` |
-| **SKZ** | 001 | Kiểm tra kết quả của ALU: nếu bằng 0 thì bỏ qua lệnh tiếp theo, ngược lại thực thi bình thường | `inA` |
-| **ADD** | 010 | Cộng giá trị trong Accumulator với giá trị tại địa chỉ bộ nhớ trong lệnh, kết quả trả về Accumulator | `inA + inB` |
-| **AND** | 011 | Thực hiện phép AND giữa giá trị trong Accumulator và giá trị tại địa chỉ bộ nhớ, kết quả trả về Accumulator | `inA AND inB` |
-| **XOR** | 100 | Thực hiện phép XOR giữa giá trị trong Accumulator và giá trị tại địa chỉ bộ nhớ, kết quả trả về Accumulator | `inA XOR inB` |
-| **LDA** | 101 | Đọc giá trị từ địa chỉ trong lệnh và đưa vào Accumulator | `inB` |
-| **STO** | 110 | Ghi dữ liệu từ Accumulator vào địa chỉ trong lệnh | `inA` |
-| **JMP** | 111 | Nhảy không điều kiện đến địa chỉ đích trong lệnh và tiếp tục thực thi chương trình | `inA` |
+| Opcode | Code | Operation | Output     |
+|--------|------|-----------|------------|
+| **HLT** | 000  | Halt program execution                     | `inA`          |
+| **SKZ** | 001  | Check ALU result: if zero, skip next instruction; otherwise, continue normally | `inA`          |
+| **ADD** | 010  | Add value in Accumulator with value from memory address in instruction, result goes to Accumulator | `inA + inB`     |
+| **AND** | 011  | Perform bitwise AND between Accumulator and value from memory, result goes to Accumulator | `inA AND inB`   |
+| **XOR** | 100  | Perform bitwise XOR between Accumulator and value from memory, result goes to Accumulator | `inA XOR inB`   |
+| **LDA** | 101  | Load value from memory address in instruction into Accumulator | `inB`          |
+| **STO** | 110  | Store data from Accumulator to memory address in instruction | `inA`          |
+| **JMP** | 111  | Unconditional jump to target address in instruction and continue program execution | `inA`          |
+
